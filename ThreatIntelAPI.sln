@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreatIntelAPI", "ThreatIntelAPI\ThreatIntelAPI.csproj", "{06129F77-1487-42E3-A512-45158B611535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreatIntelAPI.Tests", "ThreatIntelAPI.Tests\ThreatIntelAPI.Tests.csproj", "{B7968FED-0A1F-4DC8-ADE5-3406572E353F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BC5C5345-17E3-4BC3-81B0-EEF65B894999}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06129F77-1487-42E3-A512-45158B611535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06129F77-1487-42E3-A512-45158B611535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06129F77-1487-42E3-A512-45158B611535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06129F77-1487-42E3-A512-45158B611535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7968FED-0A1F-4DC8-ADE5-3406572E353F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7968FED-0A1F-4DC8-ADE5-3406572E353F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7968FED-0A1F-4DC8-ADE5-3406572E353F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7968FED-0A1F-4DC8-ADE5-3406572E353F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
