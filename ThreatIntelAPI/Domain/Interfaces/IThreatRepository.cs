@@ -12,5 +12,5 @@ public interface IThreatRepository
     Task<bool> WasRecentlyScannedAsync(string ipAddress, int withinHours = 6);
     Task<int> GetTotalScanCountAsync();
     Task IncrementDetectionCountAsync(string ipAddress);
-    Task DeleteOlderThanAsync(string hours);
+    Task DeleteOlderThanAsync(int days);
 }

@@ -8,5 +8,6 @@ public enum ThreatType
     Ransomware,
     BotnetC2,
     Scanner,
-    Spam
+    Spam,
+    Blocklisted
 }
