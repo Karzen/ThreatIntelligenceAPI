@@ -24,7 +24,6 @@
       <Folder Include="Application\Services\" />
       <Folder Include="Controllers\" />
       <Folder Include="Infrastructure\Factories\" />
-      <Folder Include="Infrastructure\Scanners\Decorators\" />
     </ItemGroup>
 
 </Project>
