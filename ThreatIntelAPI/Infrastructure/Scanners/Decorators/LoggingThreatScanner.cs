@@ -18,7 +18,7 @@ public class LoggingThreatScanner : IThreatScanner
     public LoggingThreatScanner(IThreatScanner inner, ILogger<LoggingThreatScanner> logger)
     {
         _inner = inner;
-        _logger = _logger;
+        _logger = logger;
     }
     
     public async Task<ThreatEntry> ScanIpAsync(string ipAddress)
@@ -36,7 +36,7 @@ public class LoggingThreatScanner : IThreatScanner
 
             return result;
         }
-        catch (Exception ex)
+        catch 
         {
             sw.Stop();
             _logger.LogError($"[{_inner}] Failed scanning {ipAddress} after {sw.ElapsedMilliseconds}");
