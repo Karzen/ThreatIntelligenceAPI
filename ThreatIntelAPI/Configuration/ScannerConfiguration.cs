@@ -2,7 +2,7 @@ namespace ThreatIntelAPI.Configuration;
 
 public class ScannerConfiguration
 {
-    public string Type { get; set; } = "LocalBlocklist";
+    public string Type { get; set; }
     public string? ApiKey { get; set; }
     public int TimeoutMs { get; set; } = 5000;
     public bool EnableFallback { get; set; } = true;

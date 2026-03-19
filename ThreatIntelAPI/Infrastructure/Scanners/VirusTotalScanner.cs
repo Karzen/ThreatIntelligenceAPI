@@ -7,9 +7,9 @@ namespace ThreatIntelAPI.Infrastructure.Scanners;
 public class VirusTotalScanner : IThreatScanner
 {
     private readonly HttpClient _httpClient;
-    private readonly string _apiKey;
+    private readonly string? _apiKey;
 
-    public VirusTotalScanner(HttpClient httpClient, string apiKey)
+    public VirusTotalScanner(HttpClient httpClient, string? apiKey)
     {
         _httpClient = httpClient;
         _apiKey = apiKey;

@@ -13,7 +13,7 @@ public class ThreatScannerFactory
     private readonly IMemoryCache _cache;
     private readonly ILoggerFactory _loggerFactory;
 
-    private Dictionary<string, Func<IThreatScanner>> _builders;
+    private Dictionary<string, Func<IThreatScanner?>> _builders;
 
 
     public ThreatScannerFactory(ScannerConfiguration scannerConfiguration, IHttpClientFactory httpClientFactory,
@@ -25,7 +25,7 @@ public class ThreatScannerFactory
         _loggerFactory = loggerFactory;
 
 
-        _builders = new Dictionary<string, Func<IThreatScanner>>
+        _builders = new Dictionary<string, Func<IThreatScanner?>>
         {
             ["VirusTotal"] = CreateVirusTotal,
             ["LocalBlocklist"] = CreateLocalBlocklist,
@@ -36,15 +36,27 @@ public class ThreatScannerFactory
     {
         var scanners = new List<IThreatScanner>();
 
-        scanners.Add(WrapWithDecorators(CreatePrimary()));
-
-        if (_config.EnableFallback && _config.Type != "LocalBlocklist")
-            scanners.Add(CreateLocalBlocklist());
+        if (_config.EnableFallback) // If fallback is enabled we want to add all scanners 
+        {
+            foreach (var (_, func) in _builders)
+            {
+                var scanner = func();
+                if (scanner is not null)
+                    scanners.Add(WrapWithDecorators(scanner));
+            }
+        }
+        else
+        {
+            var scanner = CreatePrimary();
+            if (scanner is null)
+                throw new InvalidOperationException($"{_config.Type} scanner not availible");
+            scanners.Add(scanner);
+        }
 
         return scanners;
     }
 
-    private IThreatScanner CreatePrimary()
+    private IThreatScanner? CreatePrimary()
     {
         if (!_builders.TryGetValue(_config.Type, out var builder))
             throw new InvalidOperationException(
@@ -56,20 +68,19 @@ public class ThreatScannerFactory
     private IThreatScanner WrapWithDecorators(IThreatScanner scanner)
     {
         IThreatScanner wrapped = new CachingThreatScanner(scanner, _cache);
-        wrapped = new LoggingThreatScanner(scanner, _loggerFactory.CreateLogger<LoggingThreatScanner>());
+        wrapped = new LoggingThreatScanner(wrapped, _loggerFactory.CreateLogger<LoggingThreatScanner>());
 
         return wrapped;
     }
 
-    private IThreatScanner CreateVirusTotal()
+    private IThreatScanner? CreateVirusTotal()
     {
-        if (string.IsNullOrEmpty(_config.ApiKey))
-            throw new InvalidOperationException("VirusTotal requires an API key. ");
-
         var client = _httpClientFactory.CreateClient("VirusTotal");
         client.Timeout = TimeSpan.FromMilliseconds(_config.TimeoutMs);
 
-        return new VirusTotalScanner(client, _config.ApiKey);
+        var scanner = new VirusTotalScanner(client, _config.ApiKey);
+
+        return scanner.IsAvailible() ? scanner : null;
     }
 
     private IThreatScanner CreateLocalBlocklist() => new LocalBlocklistScanner(_config.BlockListIPs);

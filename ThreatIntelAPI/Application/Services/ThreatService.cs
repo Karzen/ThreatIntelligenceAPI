@@ -11,11 +11,11 @@ public class ThreatService
     private readonly ILogger<ThreatService> _logger;
 
 
-
     public event EventHandler<ThreatDetectedEventArgs>? ThreatDetected;
 
 
-    public ThreatService(IEnumerable<IThreatScanner> scanners, IThreatRepository repository, ILogger<ThreatService> logger)
+    public ThreatService(IEnumerable<IThreatScanner> scanners, IThreatRepository repository,
+        ILogger<ThreatService> logger)
     {
         _scanners = scanners;
         _repository = repository;
@@ -35,34 +35,37 @@ public class ThreatService
             }
         }
 
-        var scanner = GetActiveScanner();
-        var entry = await scanner.ScanIpAsync(ipAddress);
+        var (entry, scannerName) = await ScanIpAsync(ipAddress);
+
+        if (entry is null)
+            throw new InvalidOperationException("All scanners failed in checking this ip address");
+        
         await _repository.SaveAsync(entry);
 
         if (entry.IsMalicious)
-            OnThreatDetected(entry, scanner.Name);
+            OnThreatDetected(entry, scannerName!);
 
         return entry;
     }
 
     public async Task<List<ThreatEntry>> GetHistoryAsync(int hours = 24) => await _repository.GetRecentAsync(hours);
-    
+
     public async Task<List<ThreatEntry>> GetMaliciousAsync() =>
         await _repository.GetMaliciousAsync();
-    
+
     public async Task<ThreatStatsDto> GetStatsAsync()
     {
         var all = await _repository.GetAllAsync();
 
         return new ThreatStatsDto
         {
-            TotalScans    = all.Count,
+            TotalScans = all.Count,
             TotalMalicious = all.Count(e => e.IsMalicious),
-            ByType        = all
+            ByType = all
                 .Where(e => e.IsMalicious)
                 .GroupBy(e => e.Type.ToString())
                 .ToDictionary(g => g.Key, g => g.Count()),
-            TopThreats    = all
+            TopThreats = all
                 .Where(e => e.IsMalicious)
                 .OrderByDescending(e => e.DetectionCount)
                 .Take(5)
@@ -70,18 +73,38 @@ public class ThreatService
                 .ToList()
         };
     }
-    
+
     public async Task CleanupAsync(int olderThanDays = 30) =>
         await _repository.DeleteOlderThanAsync(olderThanDays);
-    
-    private IThreatScanner GetActiveScanner()
+
+
+    private async Task<(ThreatEntry? ScannedEntry, string? ScannerName)> ScanIpAsync(string ipAddress)
     {
-        var scanner = _scanners.FirstOrDefault(s => s.IsAvailible());
-        if (scanner is null)
-            throw new InvalidOperationException("No threat scanners are currently availible");
-        
-        _logger.LogInformation($"Active scanner: {scanner.Name}");
-        return scanner;
+        var scanners = GetActiveScanners();
+        // Try all scanners
+        foreach (var scanner in scanners)
+        {
+            try
+            {
+                _logger.LogInformation($"Trying to scan {ipAddress} with {scanner.Name} scanner");
+                var entry = await scanner.ScanIpAsync(ipAddress);
+                return (entry, scanner.Name);
+            }
+            catch (Exception e)
+            {
+                // If a scanner fails log the error, and move on
+                _logger.LogError($"Failed to scan {ipAddress} with {scanner.Name} scanner exception: {e.Message}");
+            }
+        }
+
+        // If all scanners failed return null
+        return (null, null);
+    }
+
+    private IEnumerable<IThreatScanner> GetActiveScanners()
+    {
+        var scanners = _scanners.Where(s => s.IsAvailible());
+        return scanners;
     }
 
 
@@ -90,5 +113,4 @@ public class ThreatService
         var args = new ThreatDetectedEventArgs(entry, scannerName);
         ThreatDetected?.Invoke(this, args);
     }
-    
 }
