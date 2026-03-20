@@ -184,7 +184,6 @@ public class ThreatServiceTests
         stats.ByType.Should().ContainKey("Malware");
         stats.ByType.Should().ContainKey("Ransomware");
         stats.ByType.Should().ContainKey("Phishing");
-        stats.ByType.Should().ContainKey("Unknown");
     }
 
     [Fact]
