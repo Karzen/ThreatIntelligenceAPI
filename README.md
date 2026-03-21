@@ -12,6 +12,8 @@ A cybersecurity-themed REST API built in C# ASP.NET Core that accepts IP address
 > ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 > ![xUnit](https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 
+> [![Tests](https://github.com/Karzen/ThreatIntelligenceAPI/actions/workflows/tests.yml/badge.svg)](https://github.com/Karzen/ThreatIntelligenceAPI/actions/workflows/tests.yml)
+
 ---
 
 ## What it does
