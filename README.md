@@ -1,9 +1,5 @@
 # <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Detective.png" alt="Man Detective" width="25" height="25" /> Threat Intelligence API <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Detective.png" alt="Man Detective" width="25" height="25" />
 
-
-
-A cybersecurity-themed REST API built in C# ASP.NET Core that accepts IP addresses, assesses them against threat sources, persists results, and reacts to findings via domain events. Built as a university project to demonstrate Clean Architecture, SOLID principles, and design patterns in a real-world context.
-
 > ![.NET](https://img.shields.io/badge/.NET_10-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 > ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
 > ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
@@ -12,7 +8,9 @@ A cybersecurity-themed REST API built in C# ASP.NET Core that accepts IP address
 > ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 > ![xUnit](https://img.shields.io/badge/xUnit-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 
-> [![Tests](https://github.com/Karzen/ThreatIntelligenceAPI/actions/workflows/tests.yml/badge.svg)](https://github.com/Karzen/ThreatIntelligenceAPI/actions/workflows/tests.yml)
+[![Tests](https://github.com/Karzen/ThreatIntelligenceAPI/actions/workflows/tests.yml/badge.svg)](https://github.com/Karzen/ThreatIntelligenceAPI/actions/workflows/tests.yml)
+
+A cybersecurity-themed REST API built in C# ASP.NET Core that accepts IP addresses, assesses them against threat sources, persists results, and reacts to findings via domain events. Built as a university project to demonstrate Clean Architecture, SOLID principles, and design patterns in a real-world context.
 
 ---
 
