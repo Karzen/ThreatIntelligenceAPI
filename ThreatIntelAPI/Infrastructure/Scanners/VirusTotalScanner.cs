@@ -43,6 +43,5 @@ public class VirusTotalScanner : IThreatScanner
         var type = isMalicious ? ThreatType.Malware : ThreatType.Unknown;
 
         return new ThreatEntry(ipAddress, type, isMalicious);
-
     }
 }
